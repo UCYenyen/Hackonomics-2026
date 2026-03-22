@@ -1,11 +1,14 @@
+// src/components/auth/sign-in.tsx
 "use client";
 
 import { useState } from "react";
-import { signIn } from "@/lib/auth-client"; // Importing from your separated file
+import Link from "next/link";
+import { signIn } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { toast } from "sonner";
 
 export function SignInForm() {
   const [email, setEmail] = useState("");
@@ -22,12 +25,11 @@ export function SignInForm() {
         onRequest: () => setLoading(true),
         onResponse: () => setLoading(false),
         onSuccess: () => {
-          // Redirect to the dashboard
+          toast.success("Welcome back!");
           window.location.href = "/";
         },
         onError: (ctx) => {
-          // Replace with a shadcn toast in production!
-          alert(ctx.error.message); 
+          toast.error(ctx.error.message);
         },
       },
     });
@@ -36,8 +38,8 @@ export function SignInForm() {
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
-        <CardTitle>Welcome back</CardTitle>
-        <CardDescription>Enter your email and password to sign in.</CardDescription>
+        <CardTitle className="text-2xl">Sign In</CardTitle>
+        <CardDescription>Enter your email below to login to your account.</CardDescription>
       </CardHeader>
       <form onSubmit={handleSignIn}>
         <CardContent className="space-y-4">
@@ -53,7 +55,15 @@ export function SignInForm() {
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
+            <div className="flex items-center justify-between">
+              <Label htmlFor="password">Password</Label>
+              <Link 
+                href="/forgot-password" 
+                className="text-sm font-medium text-muted-foreground hover:underline"
+              >
+                Forgot your password?
+              </Link>
+            </div>
             <Input 
               id="password" 
               type="password" 
@@ -63,10 +73,16 @@ export function SignInForm() {
             />
           </div>
         </CardContent>
-        <CardFooter>
+        <CardFooter className="flex flex-col gap-4 mt-2">
           <Button type="submit" className="w-full" disabled={loading}>
             {loading ? "Signing in..." : "Sign In"}
           </Button>
+          <div className="text-center text-sm text-muted-foreground">
+            Don&apos;t have an account?{" "}
+            <Link href="/sign-up" className="font-medium text-primary hover:underline">
+              Sign up
+            </Link>
+          </div>
         </CardFooter>
       </form>
     </Card>

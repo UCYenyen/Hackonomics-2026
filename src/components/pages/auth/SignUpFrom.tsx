@@ -1,11 +1,14 @@
+// src/components/auth/sign-up.tsx
 "use client";
 
 import { useState } from "react";
-import { signUp } from "@/lib/auth-client"; // Importing from your separated file
+import Link from "next/link";
+import { signUp } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { toast } from "sonner";
 
 export function SignUpForm() {
   const [name, setName] = useState("");
@@ -24,12 +27,11 @@ export function SignUpForm() {
         onRequest: () => setLoading(true),
         onResponse: () => setLoading(false),
         onSuccess: () => {
-          // Redirect to the dashboard or home page after successful signup
+          toast.success("Account created successfully!");
           window.location.href = "/";
         },
         onError: (ctx) => {
-          // Replace with a shadcn toast in production!
-          alert(ctx.error.message); 
+          toast.error(ctx.error.message);
         },
       },
     });
@@ -38,13 +40,13 @@ export function SignUpForm() {
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
-        <CardTitle>Create an account</CardTitle>
-        <CardDescription>Enter your details to get started.</CardDescription>
+        <CardTitle className="text-2xl">Create an account</CardTitle>
+        <CardDescription>Enter your details below to get started.</CardDescription>
       </CardHeader>
       <form onSubmit={handleSignUp}>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="name">Name</Label>
+            <Label htmlFor="name">Full Name</Label>
             <Input 
               id="name" 
               placeholder="John Doe" 
@@ -75,10 +77,16 @@ export function SignUpForm() {
             />
           </div>
         </CardContent>
-        <CardFooter>
+        <CardFooter className="flex flex-col gap-4 mt-2">
           <Button type="submit" className="w-full" disabled={loading}>
             {loading ? "Creating account..." : "Sign Up"}
           </Button>
+          <div className="text-center text-sm text-muted-foreground">
+            Already have an account?{" "}
+            <Link href="/sign-in" className="font-medium text-primary hover:underline">
+              Sign in
+            </Link>
+          </div>
         </CardFooter>
       </form>
     </Card>
