@@ -6,7 +6,6 @@ import { cn } from "@/lib/utils";
 import { Toaster } from "sonner";
 import "./globals.css";
 
-
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
@@ -45,13 +44,12 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <head>
-        {/* Material Symbols */}
         <link
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
         />
       </head>
-      <body className={`${spaceGrotesk.variable} ${inter.variable} font-body bg-surface text-on-surface`}>
+      <body className={`${spaceGrotesk.variable} ${inter.variable} font-body bg-background text-foreground`}>
         <div className="flex h-screen overflow-hidden">
           <Sidebar />
           <div className="flex-1 flex flex-col overflow-hidden">
